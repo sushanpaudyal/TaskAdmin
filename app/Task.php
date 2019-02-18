@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Cron\CronExpression;
 use Illuminate\Database\Eloquent\Model;
 
 class Task extends Model
@@ -14,4 +15,16 @@ class Task extends Model
         'run_in_maintenance',
         'notification_email'
     ];
+
+    public function getLastRunAttribute(){
+        return 'N/A';
+    }
+
+    public function getNextRunAttribute(){
+        return CronExpression::factory($this->getCronExpression())->getNextRunDate('now', 0 , false, 'Asia/Kathmandu')->format('Y-m-d h:i A');
+    }
+
+    public function getCronExpression(){
+        return $this->expression ?: '* * * * *';
+    }
 }
