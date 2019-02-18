@@ -28,4 +28,8 @@ class Task extends Model
     public function getCronExpression(){
         return $this->expression ?: '* * * * *';
     }
+
+    public function results(){
+        return $this->hasMany(Result::class);
+    }
 }
