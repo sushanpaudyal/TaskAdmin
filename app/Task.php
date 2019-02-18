@@ -13,7 +13,8 @@ class Task extends Model
         'expression',
         'dont_overlap',
         'run_in_maintenance',
-        'notification_email'
+        'notification_email',
+        'is_active'
     ];
 
     public function getLastRunAttribute(){

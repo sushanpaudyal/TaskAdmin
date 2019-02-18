@@ -94,4 +94,10 @@ class TasksController extends Controller
         return redirect()->route('tasks.index')->with('status', 'Task Deleted Successfully');
 
     }
+
+    public function toggle(Task $task){
+        $task->is_active = !$task->is_active;
+        $task->save();
+        return redirect()->route('tasks.index')->with('status', 'Task Updated Successfully');
+    }
 }

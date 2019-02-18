@@ -5,7 +5,12 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">Tasks</div>
+                    <div class="card-header">
+                        <h3>
+                            Tasks
+                            <a href="{{route('tasks.create')}}" class="btn btn-primary float-right">Create task</a>
+                        </h3>
+                    </div>
 
                     <div class="card-body">
                         @if (session('status'))
@@ -20,11 +25,12 @@
                                 <th>Last Run</th>
                                 <th>Average Run Time</th>
                                 <th>Next Run</th>
+                                <th>On/Off</th>
                             <th>Delete</th>
                             </thead>
                             <tbody>
                             @foreach($tasks as $task)
-                                <tr>
+                                <tr class="table-{{ $task->is_active ? 'success' : 'danger'  }}">
                                     <td>
                                         <a href="{{route('tasks.edit', $task->id)}}">
                                             {{$task->description}}
@@ -33,6 +39,13 @@
                                     <td>{{$task->last_run}}</td>
                                     <td>{{$task->average_runtime}}</td>
                                     <td>{{$task->next_run}}</td>
+                                    <td>
+                                        <form id="toggle-form-{{$task->id}}" action="{{route('tasks.toggle', $task->id)}}" method="post">
+                                            {{csrf_field()}}
+                                            {{method_field('PUT')}}
+                                            <input type="checkbox" {{$task->is_active ? 'checked' : ''}} onchange="getElementById('toggle-form-{{$task->id}}').submit();" data-toggle="toggle" data-offstyle="danger">
+                                        </form>
+                                    </td>
                                     <td>
                                         <form id="delete-form-{{$task->id}}" action="{{route('tasks.destroy', $task->id)}}" method="post">
                                             {{csrf_field()}}
